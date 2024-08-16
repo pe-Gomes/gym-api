@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres/16-alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: gym
+    volumes:
+      - gym_db:/var/lib/postgresql/data
+
+volumes:
+  gym_db:
+    driver: local
