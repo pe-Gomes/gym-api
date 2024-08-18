@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "tsx --watch ./src/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest --coverage",
     "build": "tsup ./src --out-dir ./build",
     "start": "node ./build/server.js"
   },
@@ -17,8 +20,10 @@
   },
   "devDependencies": {
     "@eslint/js": "9.9.0",
+    "@faker-js/faker": "8.4.1",
     "@types/bcryptjs": "2.4.6",
     "@types/node": "^22.3.0",
+    "@vitest/coverage-v8": "2.0.5",
     "eslint": "9.9.0",
     "globals": "15.9.0",
     "prettier": "^3.3.3",
@@ -26,6 +31,8 @@
     "tsup": "^8.2.4",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4",
-    "typescript-eslint": "8.1.0"
+    "typescript-eslint": "8.1.0",
+    "vite-tsconfig-paths": "5.0.1",
+    "vitest": "2.0.5"
   }
 }
