@@ -1,5 +1,6 @@
 import { hashPassword } from '@/lib/utils'
 import { UsersRepository } from '@/repositories/users-repository'
+import { ConflictError } from './errors'
 
 interface RegisterUseCaseArgs {
   name: string
@@ -14,15 +15,19 @@ export class RegisterUseCase {
     const userExists = await this.repository.findByEmail(email)
 
     if (userExists) {
-      throw new Error('Email already exists')
+      throw new ConflictError()
     }
 
     const passwordHash = await hashPassword(password)
 
-    await this.repository.create({
+    const user = await this.repository.create({
       name,
       email,
       passwordHash,
     })
+
+    return {
+      user,
+    }
   }
 }
