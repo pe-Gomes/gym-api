@@ -17,7 +17,18 @@ export async function handleAuthentication(
   try {
     const authenticationUseCase = makeAuthenticationUseCase()
 
-    await authenticationUseCase.execute(data)
+    const { user } = await authenticationUseCase.execute(data)
+
+    const token = await res.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+        },
+      }
+    )
+
+    return res.status(201).send({ token })
   } catch (err) {
     if (err instanceof UnauthorizedError) {
       return res.status(400).send({ message: err.message })
@@ -25,6 +36,4 @@ export async function handleAuthentication(
 
     throw err
   }
-
-  return res.status(201).send()
 }
