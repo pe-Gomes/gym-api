@@ -1,6 +1,5 @@
-import { PrismaUsersRepository } from '@/repositories/prisma-user-repository'
-import { AuthenticationUseCase } from '@/use-cases/authentication'
 import { UnauthorizedError } from '@/use-cases/errors'
+import { makeAuthenticationUseCase } from '@/use-cases/factories/make-authentication-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -16,8 +15,7 @@ export async function handleAuthentication(
   const data = authenticationBodySchema.parse(req.body)
 
   try {
-    const userRepository = new PrismaUsersRepository()
-    const authenticationUseCase = new AuthenticationUseCase(userRepository)
+    const authenticationUseCase = makeAuthenticationUseCase()
 
     await authenticationUseCase.execute(data)
   } catch (err) {
