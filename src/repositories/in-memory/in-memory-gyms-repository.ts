@@ -4,7 +4,7 @@ import { GymsRepository } from '../gyms-repository'
 export class InMemoryGymsRepository implements GymsRepository {
   public gyms: Gym[] = []
 
-  create(data: Prisma.GymUncheckedCreateInput) {
+  create(data: Prisma.GymCreateInput) {
     const gym: Gym = {
       id: String(this.gyms.length + 1),
       title: data.title,
@@ -18,6 +18,7 @@ export class InMemoryGymsRepository implements GymsRepository {
 
     return Promise.resolve(gym)
   }
+
   findById(id: string) {
     return Promise.resolve(this.gyms.find((gym) => gym.id === id) ?? null)
   }
