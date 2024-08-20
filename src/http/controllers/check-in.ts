@@ -1,4 +1,8 @@
-import { MismatchLocationError, NotFoundError } from '@/use-cases/errors'
+import {
+  MaxCheckInsReachedError,
+  MismatchLocationError,
+  NotFoundError,
+} from '@/use-cases/errors'
 import { makeCheckInUseCase } from '@/use-cases/factories/make-check-in-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -27,7 +31,11 @@ export async function handleCheckIn(req: FastifyRequest, res: FastifyReply) {
       userLongitude,
     })
   } catch (err) {
-    if (err instanceof MismatchLocationError || err instanceof NotFoundError) {
+    if (
+      err instanceof MismatchLocationError ||
+      err instanceof NotFoundError ||
+      err instanceof MaxCheckInsReachedError
+    ) {
       return res.status(400).send({ message: err.message })
     }
 

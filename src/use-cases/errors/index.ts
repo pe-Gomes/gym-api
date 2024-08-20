@@ -13,3 +13,5 @@ export class UnauthorizedError extends Error {
 }
 
 export class MismatchLocationError extends Error {}
+
+export class MaxCheckInsReachedError extends Error {}

@@ -1,6 +1,10 @@
 import { CheckInsRepository } from '@/repositories/check-ins-repository'
 import { GymsRepository } from '@/repositories/gyms-repository'
-import { MismatchLocationError, NotFoundError } from './errors'
+import {
+  MaxCheckInsReachedError,
+  MismatchLocationError,
+  NotFoundError,
+} from './errors'
 import { getDistanceBetweenCoordinates } from '@/lib/utils'
 
 type CheckInUseCaseRequest = {
@@ -46,7 +50,7 @@ export class CheckInUseCase {
     )
 
     if (isCheckedInToday) {
-      throw new Error('User already checked in today')
+      throw new MaxCheckInsReachedError('User reached max check-ins for today.')
     }
 
     const checkIn = await this.checkInsRepository.create({
