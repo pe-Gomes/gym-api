@@ -8,9 +8,6 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function handleCheckIn(req: FastifyRequest, res: FastifyReply) {
-  // Ensure authenticated
-  await req.jwtVerify()
-
   const createCheckInSchema = z.object({
     userId: z.string(),
     gymId: z.string(),
