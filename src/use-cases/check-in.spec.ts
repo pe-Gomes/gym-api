@@ -4,7 +4,7 @@ import { CheckInUseCase } from './check-in'
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { GymsRepository } from '@/repositories/gyms-repository'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
-import { MismatchLocationError } from './errors'
+import { MaxCheckInsReachedError, MismatchLocationError } from './errors'
 
 let checkInRepository: CheckInsRepository
 let gymsRepository: GymsRepository
@@ -65,7 +65,7 @@ describe('Test Check In Use Case', () => {
         userLatitude,
         userLongitude,
       })
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxCheckInsReachedError)
   })
 
   it('should NOT check in a user to a gym if the user is too far away', async () => {
