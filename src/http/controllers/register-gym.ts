@@ -6,31 +6,22 @@ export async function handleRegisterGym(
   req: FastifyRequest,
   res: FastifyReply
 ) {
-  // Ensure authenticated
-  // try
-  try {
-    await req.jwtVerify()
+  const registerGymSchema = z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    phone: z.string().optional(),
+    latitude: z.number(),
+    longitude: z.number(),
+  })
 
-    const registerGymSchema = z.object({
-      title: z.string(),
-      description: z.string().optional(),
-      phone: z.string().optional(),
-      latitude: z.number(),
-      longitude: z.number(),
-    })
+  const body = registerGymSchema.parse(req.body)
 
-    const body = registerGymSchema.parse(req.body)
+  const registerGymUseCase = makeRegisterGymUseCase()
+  await registerGymUseCase.execute({
+    ...body,
+    description: body.description || null,
+    phone: body.phone || null,
+  })
 
-    const registerGymUseCase = makeRegisterGymUseCase()
-    await registerGymUseCase.execute({
-      ...body,
-      description: body.description || null,
-      phone: body.phone || null,
-    })
-
-    res.status(201).send()
-  } catch (error) {
-    console.log(error)
-    res.status(400).send()
-  }
+  res.status(201).send()
 }
