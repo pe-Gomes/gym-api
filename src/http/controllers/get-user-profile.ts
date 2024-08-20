@@ -6,8 +6,6 @@ export async function handleGetUserProfile(
   req: FastifyRequest,
   res: FastifyReply
 ) {
-  await req.jwtVerify().catch((err) => console.log(err))
-
   try {
     const getUserProfileUseCase = makeGetUserProfileUseCase()
 
@@ -16,16 +14,10 @@ export async function handleGetUserProfile(
     })
 
     return res.status(200).send({
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
+      ...user,
+      passwordHash: undefined,
     })
   } catch (err) {
-    console.log(err)
     if (err instanceof NotFoundError) {
       return res.status(401).send({ message: err.message })
     }
