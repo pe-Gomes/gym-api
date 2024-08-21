@@ -5,9 +5,12 @@ import { handleGetUserProfile } from './controllers/get-user-profile'
 import { handleCheckIn } from './controllers/check-in'
 import { handleRegisterGym } from './controllers/register-gym'
 import { verifyJWT } from './middlewares/verify-jwt'
+import { handleGetUserCheckIns } from './controllers/get-user-check-ins'
 
 export async function appRoutes(app: FastifyInstance) {
   app.post('/users', handleRegister)
+  app.get('/users/:userId/check-in', handleGetUserCheckIns)
+
   app.post('/sessions', handleAuthentication)
 
   app.get(
@@ -25,6 +28,7 @@ export async function appRoutes(app: FastifyInstance) {
     },
     handleCheckIn
   )
+
   app.post(
     '/gyms',
     {

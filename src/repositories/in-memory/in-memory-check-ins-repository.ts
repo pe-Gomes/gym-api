@@ -29,4 +29,28 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
       }) ?? null
     )
   }
+
+  findManyByUserIdAndPaginate({
+    userId,
+    page,
+    limit,
+  }: {
+    userId: string
+    page?: number
+    limit?: number
+  }) {
+    const filteredByUser = this.checkIns.filter(
+      (checkIn) => checkIn.userId === userId
+    )
+
+    if (!page && !limit) {
+      return Promise.resolve(filteredByUser)
+    }
+
+    // Checks the position into the array corresponding to a page and limit
+    const firstIndex = (page ? page - 1 : 1) * (limit ?? 1)
+    const lastIndex = firstIndex + (limit ?? 1)
+
+    return Promise.resolve(filteredByUser.slice(firstIndex, lastIndex))
+  }
 }
