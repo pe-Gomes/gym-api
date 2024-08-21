@@ -17,6 +17,12 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
     return Promise.resolve(checkIn)
   }
 
+  countByUserId(userId: string): Promise<number> {
+    return Promise.resolve(
+      this.checkIns.filter((checkIn) => checkIn.userId === userId).length
+    )
+  }
+
   findByUserIdOnDate(userId: string, date: Date): Promise<CheckIn | null> {
     return Promise.resolve(
       this.checkIns.find((checkIn) => {
