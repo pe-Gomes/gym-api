@@ -3,7 +3,7 @@ import { app } from '@/app'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { faker } from '@faker-js/faker'
 
-describe('Session Authentication (e2e)', () => {
+describe('Register (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -13,18 +13,12 @@ describe('Session Authentication (e2e)', () => {
   })
 
   it('should be able to register', async () => {
-    await request(app.server).post('/users').send({
+    const res = await request(app.server).post('/users').send({
       name: faker.person.fullName(),
-      email: 'email@test.com',
-      password: '123456',
-    })
-
-    const res = await request(app.server).post('/sessions').send({
-      password: '123456',
-      email: 'email@test.com',
+      email: faker.internet.email(),
+      password: faker.internet.password(),
     })
 
     expect(res.status).toBe(201)
-    expect(res.body).toEqual({ token: expect.any(String) })
   })
 })

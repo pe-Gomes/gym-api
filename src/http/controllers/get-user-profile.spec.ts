@@ -3,7 +3,7 @@ import { app } from '@/app'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { faker } from '@faker-js/faker'
 
-describe('Session Authentication (e2e)', () => {
+describe('Get User Profile (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -24,7 +24,15 @@ describe('Session Authentication (e2e)', () => {
       email: 'email@test.com',
     })
 
-    expect(res.status).toBe(201)
-    expect(res.body).toEqual({ token: expect.any(String) })
+    const { token } = res.body as { token: string }
+
+    const profile = await request(app.server)
+      .get('/me')
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(profile.status).toBe(200)
+    expect(profile.body).toEqual(
+      expect.objectContaining({ email: 'email@test.com' })
+    )
   })
 })
