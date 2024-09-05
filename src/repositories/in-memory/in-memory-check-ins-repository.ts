@@ -17,6 +17,12 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
     return Promise.resolve(checkIn)
   }
 
+  findById(id: string) {
+    return Promise.resolve(
+      this.checkIns.find((checkIn) => checkIn.id === id) ?? null
+    )
+  }
+
   countByUserId(userId: string): Promise<number> {
     return Promise.resolve(
       this.checkIns.filter((checkIn) => checkIn.userId === userId).length
@@ -58,5 +64,17 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
     const lastIndex = firstIndex + (limit ?? 1)
 
     return Promise.resolve(filteredByUser.slice(firstIndex, lastIndex))
+  }
+
+  update(checkIn: CheckIn) {
+    const checkInIndex = this.checkIns.findIndex(
+      (item) => item.id === checkIn.id
+    )
+
+    if (checkInIndex === -1) {
+      throw new Error()
+    }
+
+    return Promise.resolve((this.checkIns[checkInIndex] = checkIn))
   }
 }

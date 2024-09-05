@@ -12,6 +12,14 @@ export class UnauthorizedError extends Error {
   }
 }
 
+export class CheckInTimeoutError extends Error {
+  constructor() {
+    super(
+      'The check-in can only be validated within 20 minutes of its creation.'
+    )
+  }
+}
+
 export class MismatchLocationError extends Error {}
 
 export class MaxCheckInsReachedError extends Error {}
