@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "tsx --watch ./src/server.ts",
-    "test": "NODE_ENV=test vitest run",
-    "test:watch": "NODE_ENV=test vitest",
+    "test": "NODE_ENV=test vitest run --dir src/use-cases",
+    "test:watch": "NODE_ENV=test vitest --dir src/use-cases",
     "test:coverage": "NODE_ENV=test vitest --coverage",
+    "test:create-prisma-environment": "pnpm link ./prisma/vitest-environment-prisma",
+    "pretest:e2e": "pnpm test:create-prisma-environment",
+    "test:e2e": "vitest run --dir src/http",
     "build": "tsup ./src --out-dir ./build",
     "start": "node ./build/server.js"
   },
