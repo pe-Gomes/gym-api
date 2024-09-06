@@ -7,22 +7,25 @@ import { makeCheckInUseCase } from '@/use-cases/factories/make-check-in-use-case
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function handleCheckIn(req: FastifyRequest, res: FastifyReply) {
-  const createCheckInSchema = z.object({
-    userId: z.string(),
+export async function handleCreate(req: FastifyRequest, res: FastifyReply) {
+  const createCheckInParamSchema = z.object({
     gymId: z.string(),
+  })
+
+  const createCheckInSchema = z.object({
     userLatitude: z.number(),
     userLongitude: z.number(),
   })
 
-  const { userId, gymId, userLatitude, userLongitude } =
-    createCheckInSchema.parse(req.body)
+  const { gymId } = createCheckInParamSchema.parse(req.params)
+
+  const { userLatitude, userLongitude } = createCheckInSchema.parse(req.body)
 
   try {
     const checkInUseCase = makeCheckInUseCase()
 
     await checkInUseCase.execute({
-      userId,
+      userId: req.user.sub,
       gymId,
       userLatitude,
       userLongitude,

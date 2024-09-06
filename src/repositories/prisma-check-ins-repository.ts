@@ -7,6 +7,10 @@ export class PrismaCheckInsRepository implements CheckInsRepository {
     return await db.checkIn.create({ data })
   }
 
+  async findById(id: string) {
+    return await db.checkIn.findUnique({ where: { id } })
+  }
+
   async findByUserIdOnDate(userId: string, date: Date) {
     const from = new Date(date)
     const to = new Date(date)
@@ -49,5 +53,9 @@ export class PrismaCheckInsRepository implements CheckInsRepository {
         createdAt: 'desc',
       },
     })
+  }
+
+  async update(checkIn: CheckIn): Promise<CheckIn> {
+    return await db.checkIn.update({ where: { id: checkIn.id }, data: checkIn })
   }
 }
