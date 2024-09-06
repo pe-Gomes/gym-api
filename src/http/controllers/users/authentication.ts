@@ -28,7 +28,25 @@ export async function handleAuthentication(
       }
     )
 
-    return res.status(201).send({ token })
+    const refreshToken = await res.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+          expiresIn: '7d',
+        },
+      }
+    )
+
+    return res
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(201)
+      .send({ token })
   } catch (err) {
     if (err instanceof UnauthorizedError) {
       return res.status(400).send({ message: err.message })
