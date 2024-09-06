@@ -20,7 +20,9 @@ export async function handleAuthentication(
     const { user } = await authenticationUseCase.execute(data)
 
     const token = await res.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sign: {
           sub: user.id,

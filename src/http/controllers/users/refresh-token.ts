@@ -9,7 +9,9 @@ export async function handleRefreshToken(
   })
 
   const token = await res.jwtSign(
-    {},
+    {
+      role: req.user.role,
+    },
     {
       sign: {
         sub: req.user.sub,
@@ -18,7 +20,7 @@ export async function handleRefreshToken(
   )
 
   const refreshToken = await res.jwtSign(
-    {},
+    { role: req.user.role },
     {
       sign: {
         sub: req.user.sub,
