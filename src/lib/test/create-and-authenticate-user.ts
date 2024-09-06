@@ -3,12 +3,16 @@ import { hashPassword } from '../utils'
 import request from 'supertest'
 import type { FastifyInstance } from 'fastify'
 
-export async function createAndAuthenticateUser(app: FastifyInstance) {
+export async function createAndAuthenticateUser(
+  app: FastifyInstance,
+  isAdmin = false
+) {
   await db.user.create({
     data: {
       name: 'John Doe',
       email: 'john@acme.com',
       passwordHash: await hashPassword('123456'),
+      role: isAdmin ? 'ADMIN' : 'MEMBER',
     },
   })
 
