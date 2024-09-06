@@ -1,0 +1,24 @@
+name: Run Unit Tests
+on: [push]
+jobs:
+  unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out
+        uses: actions/checkout@v4
+
+      - name: Installing pnpm and Node
+        uses: pnpm/actions-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Installing Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Running Tests
+        run: pnpm test
